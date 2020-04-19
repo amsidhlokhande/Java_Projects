@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+
+	<security:http>
+
+		<!-- Add url pattern which need to be secured.Here the urls that content 
+			/secured/ with be secured only -->
+		<security:intercept-url pattern="/profile**"
+			access="ROLE_USER" />
+
+		<!-- Adds Support for Custom Login Form authentication -->
+		<security:form-login login-page="/login"
+			default-target-url="/success" username-parameter="username"
+			password-parameter="password" authentication-failure-url="/login?error" />
+		<security:logout logout-success-url="/login?logout" />
+	</security:http>
+
+
+	<security:authentication-manager>
+	  <security:authentication-provider user-service-ref="userDetailsService">
+	  </security:authentication-provider>
+		<!-- <security:authentication-provider> <security:password-encoder ref="encoder" 
+			/> <security:jdbc-user-service data-source-ref="dataSource" users-by-username-query="select 
+			username,password, enabled from sample.users where username=?" authorities-by-username-query="select 
+			username, role from sample.user_roles where username =?" /> </security:authentication-provider> -->
+	</security:authentication-manager>
+	<!-- <bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"> 
+		<constructor-arg name="strength" value="10" /> </bean> <context:property-placeholder 
+		location="classpath:resources/database.properties" /> <bean id="dataSource" 
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"> <property 
+		name="driverClassName" value="${hibernate.connection.driver_class}" /> <property 
+		name="url" value="${hibernate.connection.url}" /> </bean> -->
+		
+   <bean id="userDetailsService" class="com.amsidh.mvc.dao.impl.UserDaoImpl"/>		
+</beans>

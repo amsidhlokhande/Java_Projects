@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+      <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+      <property name="prefix" value="/jsp1/"/>
+      <property name="suffix" value=".jsp"/>
+  </bean>
+<bean id="pointManager" class="com.spring.bo.internal.PointManagerImpl">
+        <property name="users">
+            <list>
+                <ref bean="point1"/>
+                <ref bean="point2"/>
+                <ref bean="point3"/>
+                <ref bean="point4"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="point1" class="com.spring.bean.User">
+        <property name="name" value="Murali"/>
+        <property name="points" value="10"/>
+    </bean>
+        
+    <bean id="point2" class="com.spring.bean.User">
+        <property name="name" value="Sai"/>
+        <property name="points" value="10"/>
+    </bean>
+
+    <bean id="point3" class="com.spring.bean.User">
+        <property name="name" value="Rama"/>
+        <property name="points" value="10"/>
+    </bean>
+    
+    <bean id="point4" class="com.spring.bean.User">
+        <property name="name" value="Krishna"/>
+        <property name="points" value="10"/>
+    </bean>
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="messages"/>
+    </bean>
+
+    <bean name="/users.htm" class="com.spring.controller.UserController">
+        <property name="pointManager" ref="pointManager"/>
+    </bean>
+    <bean name="/pointincrease.htm" class="com.spring.controller.IncreasePointsFormController">
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="pointIncrease"/>
+        <property name="commandClass" value="com.spring.bean.PointIncrease"/>
+        
+
+        <property name="formView" value="pointincrease"/>
+        <property name="successView" value="users.htm"/>
+        <property name="pointManager" ref="pointManager"/>
+    </bean>
+    
+
+</beans>

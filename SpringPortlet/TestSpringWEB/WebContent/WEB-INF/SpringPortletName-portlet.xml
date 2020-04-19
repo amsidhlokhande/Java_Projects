@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+      <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+      <property name="prefix" value="/jsp/"/>
+      <property name="suffix" value=".jsp"/>
+  </bean>
+  <bean id="pointManager" class="com.wlp.spring.bo.internal.PointManagerImpl">
+        <property name="users">
+            <list>
+                <ref bean="point1"/>
+                <ref bean="point2"/>
+                <ref bean="point3"/>
+                <ref bean="point4"/>
+            </list>
+        </property>
+  </bean>
+
+  <bean id="point1" class="com.wlp.spring.bean.User">
+        <property name="name" value="Murali"/>
+        <property name="points" value="6"/>
+  </bean>
+        
+  <bean id="point2" class="com.wlp.spring.bean.User">
+        <property name="name" value="Sai"/>
+        <property name="points" value="13"/>
+  </bean>
+
+  <bean id="point3" class="com.wlp.spring.bean.User">
+        <property name="name" value="Rama"/>
+        <property name="points" value="43"/>
+  </bean>
+    
+  <bean id="point4" class="com.wlp.spring.bean.User">
+        <property name="name" value="Krishna"/>
+        <property name="points" value="23"/>
+  </bean>
+  
+  <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="messages"/>
+  </bean>
+
+  <bean name="/users.htm" id="userController" class="com.wlp.spring.controller.UserController">
+        <property name="pointManager" ref="pointManager"/>
+  </bean>
+  
+  <bean name="/pointincrease.htm" id="pointIncreaseController" class="com.wlp.spring.controller.IncreasePointsFormController">
+        <property name="sessionForm" value="true"/>
+        <property name="pointManager" ref="pointManager"/>
+        <property name="commandName" value="pointIncrease"/>
+        <property name="commandClass" value="com.wlp.spring.bean.PointIncrease"/>
+        <property name="formView" value="pointincrease"/>
+        <property name="successView" value="users"/>
+  </bean>
+    
+
+	
+	<bean id="parameterMappingInterceptor"
+		class="org.springframework.web.portlet.handler.ParameterMappingInterceptor" />
+
+	<bean id="portletModeParameterHandlerMapping"
+		class="org.springframework.web.portlet.handler.PortletModeParameterHandlerMapping">
+		<property name="order" value="1" />
+		<property name="interceptors">
+			<list>
+				<ref bean="parameterMappingInterceptor" />
+			</list>
+		</property>
+		<property name="portletModeParameterMap">
+			<map>
+				<entry key="view">
+					<map>
+						<entry key="pointincrease">
+							<ref bean="pointIncreaseController" />
+						</entry>
+						<entry key="users">
+							<ref bean="userController" />
+						</entry>
+					</map>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="portletModeHandlerMapping"
+		class="org.springframework.web.portlet.handler.PortletModeHandlerMapping">
+		<property name="order" value="2" />
+		<property name="portletModeMap">
+			<map>
+				<entry key="view">
+					<ref bean="userController" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+</beans>
