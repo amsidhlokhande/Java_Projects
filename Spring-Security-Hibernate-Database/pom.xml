@@ -9,7 +9,7 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<java_version>1.6</java_version>
-		<spring_version>3.2.8.RELEASE</spring_version>
+		<spring_version>5.2.5.RELEASE</spring_version>
 		<spring_security_version>3.2.3.RELEASE</spring_security_version>
 		<jstl_version>1.2</jstl_version>
 		<my_sql_connector_version>5.1.30</my_sql_connector_version>
